@@ -1,10 +1,21 @@
 import pygame
 
 pygame.init()
-size = width, height = tuple(map(int, input().split()))
+width, n = tuple(map(int, input().split()))
+height = width
+size = width, height
 screen = pygame.display.set_mode(size)
 
-pygame.draw.rect(screen, (255, 0, 0), (1, 1, width - 2, height - 2))
+for i in range(n):
+    for j in range(n):
+        if (j + i) % (2 * n) != 0:
+            pygame.draw.rect(screen, (0, 0, 0), (i, j, n, n))
+            # print(i, j)
+        else:
+            pygame.draw.rect(screen, (255, 255, 255), (i, j, n, n))
+
+            # print('*' * 40)
+
 pygame.display.flip()
 
 # ожидание закрытия окна:
