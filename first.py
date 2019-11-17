@@ -4,6 +4,7 @@ import pygame
 # n = 100  # int(input())
 size = 300, 200
 
+
 # Начало отрисовки окна
 pygame.init()
 screen = pygame.display.set_mode(size)
