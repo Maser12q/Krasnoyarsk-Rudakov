@@ -1,7 +1,7 @@
 import pygame
 
 pygame.init()
-width, n = 900, 3  # tuple(map(int, input().split()))
+width, n = tuple(map(int, input().split()))
 height = width
 kol_vo = width // n
 size = width, height
