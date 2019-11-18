@@ -1,22 +1,19 @@
-import pygame
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget
 
-"""место для объявления переменных"""
-# n = 100  # int(input())
-size = 300, 200
 
-# Начало отрисовки окна
-pygame.init()
-screen = pygame.display.set_mode(size)
-screen.fill((255, 255, 255))
+class Example(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
 
-for i in range(300 // 15):
-    for j in range(200 // 15):
-        if j % 2 == 0:
-            pygame.draw.rect(screen, (255, 0, 0), (i * 33, j + (17 * j), 31, 16))
-        else:
-            pygame.draw.rect(screen, (255, 0, 0), (-15 + (i * 33), j + (17 * j), 31, 16))
+    def initUI(self):
+        self.setGeometry(300, 300, 300, 300)
+        self.setWindowTitle('Первая программа')
 
-pygame.display.flip()
 
-while pygame.event.wait().type != pygame.QUIT:
-    pass
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Example()
+    ex.show()
+    sys.exit(app.exec())
