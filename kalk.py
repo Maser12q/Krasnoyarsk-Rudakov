@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         self.vyvod.setGeometry(QtCore.QRect(20, 20, 771, 61))
         self.vyvod.setDigitCount(40)
         self.vyvod.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
-        self.vyvod.setProperty("value", 1.0)
+        self.vyvod.setProperty("value", 0.0)
         self.vyvod.setObjectName("vyvod")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(20, 210, 461, 411))
