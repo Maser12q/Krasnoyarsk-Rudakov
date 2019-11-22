@@ -44,7 +44,7 @@ class Threeangle(Object):
         # print(self.vt)
 
 
-"""для настройки окна, типа void Start в Unity"""
+"""для настройки окна, типа void Start в Unity или Setup в arduino"""
 pygame.init()
 size = width, height = (201, 201)
 screen = pygame.display.set_mode(size)
