@@ -1,62 +1,77 @@
 import pygame
+from pygame.math import Vector2
+
+"""классы объектов, без них не работает"""
 
 
 class Object:
     def __init__(self):
-        self.fps = 100
+        self.fps = 50
         self.x_size = width
         self.y_size = height
-        self.vx = -250
-        self.vy = -250
         self.color = (255, 255, 255)
+        self.vi = 50
+        self.r = 70
 
 
-class Ball(Object):
-    def __init__(self, pos):
+class Threeangle(Object):
+    def __init__(self, a1, a2):
         super().__init__()
-        self.x, self.y = pos
-        pygame.draw.circle(screen, self.color, (self.x, self.y), 10)
+        self.angle_1 = a1
+        self.angle_2 = a2
+        self.vt = 0
+        self.a1 = Vector2((101, self.r))
 
-    def __delt_v(self):
-        if self.x < 10:
-            self.x = 10
-        if self.x > self.x_size - 10:
-            self.x = self.x_size - 10
-        if self.y > self.y_size - 10:
-            self.y = self.y_size - 10
-        if self.y < 10:
-            self.y = 10
-        if self.x >= self.x_size - 10 or self.x <= 10:
-            self.vx = -self.vx
-        if self.y >= self.y_size - 10 or self.y <= 10:
-            self.vy = -self.vy
+        self.a2 = Vector2((101, self.r))
 
-        self.x += int(self.vx / self.fps)
-        self.y += int(self.vy / self.fps)
+        print(self.vt)
 
-    def otr_sob(self):
-        pygame.draw.circle(screen, self.color, (self.x, self.y), 10)
-        self.__delt_v()
+    def low_v(self):
+        self.vt -= self.vi
+
+    def high_v(self):
+        self.vt += self.vi
+
+    def edit_angle(self):
+        self.angle_1 += int(self.vt / self.fps) * 3
+        self.angle_2 += int(self.vt / self.fps) * 3
+        self.a1.from_polar((self.r, self.angle_1))
+        self.a2.from_polar((self.r, self.angle_2))
+
+    def change_koord(self):
+        self.edit_angle()
+        pygame.draw.polygon(screen, (255, 255, 255), [(101, 101), self.a1 + (101, 101), self.a2 + (101, 101)])
+        # print(self.vt)
 
 
+"""для настройки окна, типа void Start в Unity"""
 pygame.init()
-size = width, height = (800, 800)
+size = width, height = (201, 201)
 screen = pygame.display.set_mode(size)
-n = list()
 running = True
-
 clock = pygame.time.Clock()
+n = [Threeangle(255, 285), Threeangle(15, 45), Threeangle(165, 135)]
+
+"""главный цикл, типа void Update, хотя не, fixed_update, в unity"""
 while running:
     screen.fill((0, 0, 0))
-    # pygame.draw.line(screen, (255, 255, 255), (400, 0), (400, 800), 5)
+    pygame.draw.circle(screen, (255, 255, 255), (101, 101), 10)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            n.append(Ball(event.pos))
+            if event.button == 1:
+                # down
+                for i in n:
+                    i.low_v()
+            elif event.button == 3:
+                # up
+                for i in n:
+                    i.high_v()
 
     for i in n:
-        i.otr_sob()
+        i.change_koord()
+        # print(i.vt)
 
-    clock.tick(100)
+    clock.tick(50)
     pygame.display.flip()
