@@ -1,51 +1,79 @@
+import random
+
 import pygame
 
-running = True
-
-
-# # классы объектов, без них не работает
-# class Object:
-#     def __init__(self):
-#         self.fps = 50
-#         self.x_size = width
-#         self.y_size = height
-#         self.color = (255, 255, 255)
-#         self.vi = 50
-#         self.r = 70
-
-def k_ku(x, y):
-    if y1 < y:
-        y -= 1
-    elif y1 > y:
-        y += 1
-
-    if x1 < x:
-        x -= 1
-    elif x1 > x:
-        x += 1
-    pygame.draw.circle(screen, (255, 0, 0), (x, y), 20)
-
-    return x, y
-
-
-# для настройки окна, типа void Start в Unity или Setup в arduino
-pygame.init()
-size = width, height = (501, 501)
+# width, height =
+size = 1000, 1000
+fps = 60
 screen = pygame.display.set_mode(size)
+running = True
 clock = pygame.time.Clock()
 
-x, y = 251, 251
-x1, y1 = 251, 251
-print(1)
-# главный цикл, типа void Update, хотя не, fixed_update, в unity
+
+def get_col():
+    return random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+
+
+class Board:
+    # создание поля
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.board = dict()  # (cell_x, cell_y): [cell_id, cell_val]
+        # значения по умолчанию
+        self.left = 10
+        self.top = 10
+        self.cell_size = 30
+
+    # настройка внешнего вида
+    def set_view(self, left, top, cell_size):
+        self.left = left
+        self.top = top
+        self.cell_size = cell_size
+
+    def render(self, surf):
+        for i in range(self.left, self.left + self.width * self.cell_size, self.cell_size):
+            for j in range(self.top, self.top + self.height * self.cell_size, self.cell_size):
+                if (i, j) not in self.board.keys():
+                    self.board[(i, j)] = [(i // self.cell_size, j // self.cell_size), 0]
+                if self.board[(i, j)][1] != 1:
+                    pygame.draw.rect(surf, (255, 255, 255), (i, j, self.cell_size, self.cell_size), 1)
+                else:
+                    pygame.draw.rect(surf, (255, 255, 255), (i, j, self.cell_size, self.cell_size))
+
+    def get_cell(self, mouse_pos):
+        xm, ym = mouse_pos
+        for xc, yc in self.board.keys():
+            if xc <= xm <= xc + self.cell_size and yc <= ym <= yc + self.cell_size:
+                return xc, yc
+
+    def on_click(self, cell_coords):
+        if cell_coords is not None:
+            x, y = cell_coords
+            self.board[(x, y)][1] = 1
+
+
+    def get_click(self, mouse_pos):
+        cell = self.get_cell(mouse_pos)
+        self.on_click(cell)
+
+
+board = Board(10, 10)
+
+board.set_view(0, 0, 50)
+
 while running:
     screen.fill((0, 0, 0))
+    board.render(screen)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            x1, y1 = event.pos
-
-    x, y = k_ku(x, y)
-    clock.tick(50)
+            board.get_click(event.pos)
+        if event.type == pygame.KEYDOWN:
+            board.board.clear()
+    screen.fill((0, 0, 0))
+    board.render(screen)
+    clock.tick(fps)
     pygame.display.flip()
+print(board.board)
