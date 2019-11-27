@@ -52,7 +52,6 @@ class Board:
             x, y = cell_coords
             self.board[(x, y)][1] = 1
 
-
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)
         self.on_click(cell)
