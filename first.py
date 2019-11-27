@@ -50,11 +50,13 @@ class Board:
     def on_click(self, cell_coords):
         if cell_coords is not None:
             x, y = cell_coords
-            self.board[(x, y)][1] = 1
+            if self.board[(x, y)][1] == 1:
+                self.board[(x, y)][1] = 0
+            else:
+                self.board[(x, y)][1] = 1
 
     def get_click(self, mouse_pos):
-        cell = self.get_cell(mouse_pos)
-        self.on_click(cell)
+        self.on_click(self.get_cell(mouse_pos))
 
 
 board = Board(10, 10)
@@ -75,4 +77,5 @@ while running:
     board.render(screen)
     clock.tick(fps)
     pygame.display.flip()
+
 print(board.board)
