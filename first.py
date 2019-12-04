@@ -21,7 +21,6 @@ def load_image(name, color_key=None):
     return image
 
 
-
 size = width, height = 400, 300
 screen = pygame.display.set_mode(size)
 
