@@ -16,24 +16,40 @@ import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 
+class QuestOne:
+    def __init__(self):
+        self.zapros = 0
+        self.peer_id = -1
+        self.chat_id = -1
+        self.msg = {1: 'у тебя есть лям, что сделаешь', 2: 'ок, что будет дальше?',
+                    3: 'Все ложь, и как итог: люби, страдай и какай, либо еби, но это опционально'}
+
+    def msg_def(self, vk, chat_id):
+        self.zapros += 1
+        vk.messages.send(chat_id=chat_id,
+                         random_id=random.randint(1, 9489979897999),
+                         message=self.msg.get(self.zapros, "квест закончен, техобслуживание"))
+
+
 def main():
     zap()
 
 
 def zap():
     msg = ' '
-
+    mas = []
     vk_session = vk_api.VkApi(
         token='d40c66d6f609a4a50b4e470b6a0f015a1d69e982f3cc16addbb946d44dfa90eba540bf2e6d20f07b25ed8')
     vk = vk_session.get_api()
     long_poll = VkBotLongPoll(vk_session, '189131918')
-
+    r = QuestOne()
     for event in long_poll.listen():
         if event.type == VkBotEventType.MESSAGE_NEW:
             print(event.obj)
             if len(str(event.obj.get('message').get('peer_id'))) > 9:
                 if event.obj.get('message').get('text').lower() in ['ммм', 'хентай', 'аниме', 'жопа', 'грудь']:
                     msg = 'Хентай - топ!'
+
                 elif event.obj.get('message').get('text').lower() in ['...', 'заткнись', 'сука', 'пизда', 'хех']:
                     msg = '*ушёл*'
                     vk.messages.send(chat_id=event.obj.get('message').get('peer_id') - 2000000000,
@@ -41,12 +57,13 @@ def zap():
                                      message=msg)
                     time.sleep(2)
                     msg = '*пришёл*'
-                elif 'програм' in event.obj.get('message').get('text').lower() and 'сохран' in event.obj.get(
-                        'message').get('text').lower():
-                    owner_id = event.obj.get('message').get('attachments')[0].get('doc').get('owner_id')
-                    id_doc = event.obj.get('message').get('attachments')[0].get('doc').get('id')
-                    token = event.obj.get('message').get('attachments')[0].get('doc').get('access_key', '')
-                    vk.docs.add(owner_id=owner_id, doc_id=id_doc, access_key=token)
+
+                elif 'квест' in event.obj.get('message').get('text').lower():
+
+                    if event.obj.get('message').get('from_id') not in mas:
+                        s = (event.obj.get('message').get('peer_id') - 2000000000)
+                        r.msg_def(vk, s)
+
                 else:
                     msg = ''
 
