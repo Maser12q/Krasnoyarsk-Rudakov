@@ -12,11 +12,8 @@
 import random
 import time
 
-import requests
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
-
-requests.get()
 
 
 # class QuestOne:
