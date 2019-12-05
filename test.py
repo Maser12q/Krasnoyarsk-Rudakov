@@ -1,6 +1,5 @@
 import requests
 
-
 def save_image_with_url(url):
     try:
         img = requests.get(url)  # адрес картинки
