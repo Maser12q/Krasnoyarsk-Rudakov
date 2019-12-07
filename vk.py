@@ -106,10 +106,14 @@ def zap():
                     vk.messages.send(chat_id=event.obj.get('message').get('peer_id') - 2000000000,
                                      random_id=random.randint(1, 9489979897999),
                                      message='Ку, как ваше настроение?')
-                if event.obj.get('message').get('text').lower() in ['ммм', 'хентай', 'аниме', 'жопа', 'грудь']:
+                if event.obj.get('message').get('text').lower() in ['хентай', 'аниме', 'жопа', 'грудь']:
                     msg = 'Хентай - топ!'
+                elif event.obj.get('message').get('text').lower() in ['ммм', '...']:
+                    vk.messages.send(chat_id=event.obj.get('message').get('peer_id') - 2000000000,
+                                     random_id=random.randint(1, 9489979897999),
+                                     message='Что?')
 
-                elif event.obj.get('message').get('text').lower() in ['...', 'заткнись', 'сука', 'пизда', 'хех']:
+                elif event.obj.get('message').get('text').lower() in ['заткнись']:
                     msg = '*ушёл*'
                     vk.messages.send(chat_id=event.obj.get('message').get('peer_id') - 2000000000,
                                      random_id=random.randint(1, 9489979897999),
@@ -135,14 +139,14 @@ def zap():
                                          random_id=random.randint(1, 9489979897999),
                                          message='общение')
 
-                elif 'my_gk]' in event.obj.get('message').get('text').lower():
-                    vk.messages.send(chat_id=event.obj.get('message').get('peer_id') - 2000000000,
-                                     random_id=random.randint(1, 9489979897999),
-                                     message=k_s_b(event.obj.get('message').get('text').lower()))
 
                 else:
-                    msg = ''
-
+                    try:
+                        vk.messages.send(chat_id=event.obj.get('message').get('peer_id') - 2000000000,
+                                         random_id=random.randint(1, 9489979897999),
+                                         message=k_s_b(event.obj.get('message').get('text').lower()))
+                    except vk_api.exceptions.ApiError:
+                        pass
                 try:
                     vk.messages.send(chat_id=event.obj.get('message').get('peer_id') - 2000000000,
                                      random_id=random.randint(1, 9489979897999),
