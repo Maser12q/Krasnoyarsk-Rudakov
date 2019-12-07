@@ -1,7 +1,6 @@
 import random
 import time
 
-import pymorphy2
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
